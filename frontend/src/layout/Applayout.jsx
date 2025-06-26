@@ -23,9 +23,12 @@ export default function EcommerceLayout() {
 
   const guestId = user?.user?._id || localStorage.getItem("guestId");
 
-  useEffect(() => {
-    dispatch(getCart(guestId));
-  }, [dispatch, guestId]);
+ useEffect(() => {
+  const shouldFetchCart = user?.user?._id || localStorage.getItem("guestId");
+  if (shouldFetchCart && user?.isAuthenticated) {
+    dispatch(getCart(shouldFetchCart));
+  }
+}, [dispatch, user]);
 
   const toggleCartDrawer = () => setCartDrawerOpen(!cartDrawerOpen);
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
