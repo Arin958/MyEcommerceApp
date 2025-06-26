@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Menu, X } from "lucide-react";
 import { logout } from "../store/auth/authSlice";
 import CartDrawer from "../components/Cart/CartDrawer";
-import { getCart } from "../store/cart/cartSlice";
+import { clearCart, getCart } from "../store/cart/cartSlice";
 import { persistor } from "../store/store";
 
 export default function EcommerceLayout() {
@@ -31,13 +31,13 @@ export default function EcommerceLayout() {
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
   const toggleSearch = () => setSearchOpen(!searchOpen);
 
-  const handleLogout = () => {
-    dispatch(logout());
-    persistor.purge();
-    setShowProfileDropdown(false);
-    navigate("/");
-  };
-
+const handleLogout = async () => {
+  dispatch(clearCart());              // Clears cart state
+  await dispatch(logout());           // Logs out user and clears cookie
+  persistor.purge();                  // Clears redux-persist storage
+  setShowProfileDropdown(false);     // UI cleanup
+  navigate("/");                      // Redirect to homepage
+};
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (!event.target.closest("#profile-dropdown")) {
