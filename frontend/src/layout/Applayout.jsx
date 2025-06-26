@@ -32,11 +32,12 @@ export default function EcommerceLayout() {
   const toggleSearch = () => setSearchOpen(!searchOpen);
 
 const handleLogout = async () => {
-  dispatch(clearCart());              // Clears cart state
-  await dispatch(logout());           // Logs out user and clears cookie
-  persistor.purge();                  // Clears redux-persist storage
-  setShowProfileDropdown(false);     // UI cleanup
-  navigate("/");                      // Redirect to homepage
+  dispatch(clearCart());
+  await dispatch(logout());
+  await persistor.purge();  // await this so it completes
+  localStorage.removeItem("guestId"); // if you store guestId manually
+  setShowProfileDropdown(false);
+  navigate("/");
 };
   useEffect(() => {
     const handleClickOutside = (event) => {
