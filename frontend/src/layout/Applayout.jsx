@@ -33,7 +33,7 @@ export default function EcommerceLayout() {
 
 const handleLogout = async () => {
   dispatch(clearCart());
-  await dispatch(logout());
+  await dispatch(logout()).unwrap();
   await persistor.purge();  // await this so it completes
   localStorage.removeItem("guestId"); // if you store guestId manually
   setShowProfileDropdown(false);
